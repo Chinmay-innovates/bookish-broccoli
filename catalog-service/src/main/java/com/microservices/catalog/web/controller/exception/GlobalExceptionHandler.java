@@ -1,16 +1,15 @@
 package com.microservices.catalog.web.controller.exception;
 
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+
 import com.microservices.catalog.domain.ProductNotFoundException;
+import java.net.URI;
+import java.time.Instant;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import java.net.URI;
-import java.time.Instant;
-
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -20,8 +19,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     ProblemDetail handleUnhandledException(Exception e) {
-        ProblemDetail problemDetail =
-                ProblemDetail.forStatusAndDetail(INTERNAL_SERVER_ERROR, e.getMessage());
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(INTERNAL_SERVER_ERROR, e.getMessage());
         problemDetail.setType(ISE_FOUND_TYPE);
         problemDetail.setTitle("Internal Server Error");
         problemDetail.setProperty("service", SERVICE_NAME);
