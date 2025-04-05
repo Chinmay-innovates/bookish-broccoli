@@ -84,4 +84,22 @@ class ProductControllerTest extends AbstractIT {
                 .body("hasNext", is(true))
                 .body("hasPrevious", is(false));
     }
+
+    @Test
+    @DisplayName("Should return products sorted by name ASC")
+    void shouldSortByNameAsc() {
+        given().contentType(ContentType.JSON)
+                .when()
+                .get("/api/products?sort=name,asc")
+                .then()
+                .statusCode(200)
+                .body("data[0].name", is("A Game of Thrones"))
+                .body("data[1].name", is("A Thousand Splendid Suns"))
+                .body("data[2].name", is("Charlotte's Web"))
+                .body("data[3].name", is("Fifty Shades of Grey"))
+                .body("data[4].name", is("Gone with the Wind"))
+                .body("data[5].name", is("One Flew Over the Cuckoo's Nest"))
+                .body("data[6].name", is("The Alchemist"))
+                .body("data[7].name", is("The Book Thief"));
+    }
 }
