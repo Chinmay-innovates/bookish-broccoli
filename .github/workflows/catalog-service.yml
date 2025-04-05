@@ -28,8 +28,14 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
+      - name: Debug mvnw file
+        run: |
+          ls -l
+          file mvnw || echo "No mvnw found"
+          head -n 1 mvnw || echo "Can't read mvnw"
+
       - name: Make mvnw executable
-        run: chmod +x ./mvnw
+        run: chmod +x mvnw
 
       - name: Build with Maven
         run: ./mvnw -ntp verify
