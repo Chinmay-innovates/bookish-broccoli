@@ -1,9 +1,9 @@
-name: Catalog Service
+name: Order Service
 
 on:
   push:
     paths:
-      - catalog-service/**
+      - order-service/**
     branches:
       - 'main'
   pull_request:
@@ -14,8 +14,7 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     env:
-      working-directory: ./catalog-service
-      DOCKER_IMAGE_NAME: ${{secrets.DOCKER_USERNAME}}/bookstore-order-service
+      working-directory: ./order-service
     defaults:
       run:
         working-directory: ${{ env.working-directory }}
@@ -52,5 +51,4 @@ jobs:
         name: Build and Publish Docker Image
         run: |
           ./mvnw spring-boot:build-image -D skipTests
-          echo "Pushing the image $DOCKER_IMAGE_NAME to Docker Hub..."
-          docker push $DOCKER_IMAGE_NAME
+          docker push ${{secrets.DOCKERHUB_USERNAME}}/bookstore-order-service
