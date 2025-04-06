@@ -30,9 +30,7 @@ class RabbitMQConfig {
 
     @Bean
     Binding newOrdersQueueBinding() {
-        return BindingBuilder.bind(newOrdersQueue())
-                .to(exchange())
-                .with(properties.newOrdersQueue());
+        return BindingBuilder.bind(newOrdersQueue()).to(exchange()).with(properties.newOrdersQueue());
     }
 
     @Bean
@@ -42,9 +40,7 @@ class RabbitMQConfig {
 
     @Bean
     Binding deliveredOrdersQueueBinding() {
-        return BindingBuilder.bind(deliveredOrdersQueue())
-                .to(exchange())
-                .with(properties.deliveredOrdersQueue());
+        return BindingBuilder.bind(deliveredOrdersQueue()).to(exchange()).with(properties.deliveredOrdersQueue());
     }
 
     @Bean
@@ -54,9 +50,7 @@ class RabbitMQConfig {
 
     @Bean
     Binding cancelledOrdersQueueBinding() {
-        return BindingBuilder.bind(cancelledOrdersQueue())
-                .to(exchange())
-                .with(properties.cancelledOrdersQueue());
+        return BindingBuilder.bind(cancelledOrdersQueue()).to(exchange()).with(properties.cancelledOrdersQueue());
     }
 
     @Bean
@@ -66,11 +60,8 @@ class RabbitMQConfig {
 
     @Bean
     Binding errorOrdersQueueBinding() {
-        return BindingBuilder.bind(errorOrdersQueue())
-                .to(exchange())
-                .with(properties.errorOrdersQueue());
+        return BindingBuilder.bind(errorOrdersQueue()).to(exchange()).with(properties.errorOrdersQueue());
     }
-
 
     @Bean
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory, ObjectMapper objectMapper) {

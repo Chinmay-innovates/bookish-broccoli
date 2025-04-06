@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
- class RabbitMQController {
+class RabbitMQController {
     private final RabbitTemplate rabbitTemplate;
     private final ApplicationProperties properties;
 
@@ -18,17 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 
     @PostMapping("/send")
     public void sendMessage(@RequestBody MyMessage message) {
-        rabbitTemplate.convertAndSend(
-                properties.orderEventsExchange(),
-                message.routingKey(),
-                message.payload()
-        );
+        rabbitTemplate.convertAndSend(properties.orderEventsExchange(), message.routingKey(), message.payload());
     }
-
 }
 
-record MyMessage(String routingKey, MyPayload  payload) {
-}
+record MyMessage(String routingKey, MyPayload payload) {}
 
-record MyPayload(String content) {
-}
+record MyPayload(String content) {}

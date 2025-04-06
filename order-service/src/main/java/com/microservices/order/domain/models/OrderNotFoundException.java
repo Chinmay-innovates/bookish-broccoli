@@ -1,4 +1,4 @@
-package com.microservices.order.domain;
+package com.microservices.order.domain.models;
 
 public class OrderNotFoundException extends RuntimeException {
 
