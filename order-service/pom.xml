@@ -31,6 +31,7 @@
         <spring-cloud.version>2024.0.1</spring-cloud.version>
         <spotless-maven-plugin.version>2.44.3</spotless-maven-plugin.version>
         <dockerImageName>visper3301/bookstore-${project.artifactId}</dockerImageName>
+        <instancio.version>5.4.0</instancio.version>
     </properties>
     <dependencies>
         <dependency>
@@ -120,6 +121,12 @@
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.instancio</groupId>
+            <artifactId>instancio-junit</artifactId>
+            <version>${instancio.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
