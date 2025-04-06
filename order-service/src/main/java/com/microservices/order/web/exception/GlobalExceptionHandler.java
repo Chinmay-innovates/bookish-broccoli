@@ -1,7 +1,6 @@
 package com.microservices.order.web.exception;
 
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 import com.microservices.order.domain.models.InvalidOrderException;
 import com.microservices.order.domain.models.OrderNotFoundException;
@@ -10,7 +9,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -52,7 +50,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(InvalidOrderException.class)
     ProblemDetail handleInvalidOrderException(InvalidOrderException e) {
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(BAD_REQUEST, e.getMessage());
         problemDetail.setTitle("Invalid Order Creation Request");
         problemDetail.setType(BAD_REQUEST_TYPE);
         problemDetail.setProperty("service", SERVICE_NAME);
@@ -69,14 +67,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             String errorMessage = error.getDefaultMessage();
             errors.add(errorMessage);
         });
-        ProblemDetail problemDetail =
-                ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Invalid request payload");
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(BAD_REQUEST, "Invalid request payload");
         problemDetail.setTitle("Bad Request");
         problemDetail.setType(BAD_REQUEST_TYPE);
         problemDetail.setProperty("errors", errors);
         problemDetail.setProperty("service", SERVICE_NAME);
         problemDetail.setProperty("error_category", "Generic");
         problemDetail.setProperty("timestamp", Instant.now());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
+        return ResponseEntity.status(BAD_REQUEST).body(problemDetail);
     }
 }

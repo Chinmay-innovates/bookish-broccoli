@@ -1,14 +1,14 @@
 package com.microservices.order.web.controller;
 
-import com.microservices.order.AbstractIT;
-import com.microservices.order.testdata.TestDataFactory;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+
+import com.microservices.order.AbstractIT;
+import com.microservices.order.testdata.TestDataFactory;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 class OrderControllerTest extends AbstractIT {
 
