@@ -1,15 +1,16 @@
 package com.microservices.order.testdata;
 
-import static org.instancio.Select.field;
-
 import com.microservices.order.domain.models.Address;
 import com.microservices.order.domain.models.CreateOrderRequest;
 import com.microservices.order.domain.models.Customer;
 import com.microservices.order.domain.models.OrderItem;
+import org.instancio.Instancio;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
-import org.instancio.Instancio;
+
+import static org.instancio.Select.field;
 
 public class TestDataFactory {
 
@@ -19,10 +20,28 @@ public class TestDataFactory {
     static final Set<OrderItem> INVALID_ORDER_ITEMS =
             Set.of(new OrderItem("ABCD", "Product 1", new BigDecimal("25.50"), 1));
 
+    public static CreateOrderRequest createOrderRequestWithCustomItem(String code, String name, BigDecimal price) {
+        Set<OrderItem> customItems = Set.of(new OrderItem(code, name, price, 1));
+
+        return Instancio.of(CreateOrderRequest.class)
+                .generate(field(Customer::email), gen -> gen.text().pattern("#c#c#c#c#d#d@mail.com"))
+                .generate(field(Address::country), gen -> gen.oneOf(VALID_COUNTIES))
+                .set(field(CreateOrderRequest::items), customItems)
+                .create();
+    }
+
     public static CreateOrderRequest createValidOrderRequest() {
         return Instancio.of(CreateOrderRequest.class)
                 .generate(field(Customer::email), gen -> gen.text().pattern("#a#a#a#a#a#a@mail.com"))
                 .set(field(CreateOrderRequest::items), VALID_ORDER_ITEMS)
+                .generate(field(Address::country), gen -> gen.oneOf(VALID_COUNTIES))
+                .create();
+    }
+
+    public static CreateOrderRequest createOrderRequestWithInvalidOrderItems() {
+        return Instancio.of(CreateOrderRequest.class)
+                .generate(field(Customer::email), gen -> gen.text().pattern("#a#a#a#a#a#a@mail.com"))
+                .set(field(CreateOrderRequest::items), INVALID_ORDER_ITEMS)
                 .generate(field(Address::country), gen -> gen.oneOf(VALID_COUNTIES))
                 .create();
     }
