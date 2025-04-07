@@ -27,9 +27,11 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(controllers = OrderController.class)
 class OrderControllerUnitTests {
     @MockitoBean
+    @Autowired
     private OrderService orderService;
 
     @MockitoBean
+    @Autowired
     private SecurityService securityService;
 
     @Autowired
