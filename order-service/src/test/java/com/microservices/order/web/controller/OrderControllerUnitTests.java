@@ -8,14 +8,19 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microservices.order.domain.models.CreateOrderRequest;
+import com.microservices.order.domain.models.InvalidOrderException;
 import com.microservices.order.domain.models.OrderService;
 import com.microservices.order.domain.models.SecurityService;
+import com.microservices.order.testdata.TestDataFactory;
+import java.math.BigDecimal;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -27,11 +32,9 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(controllers = OrderController.class)
 class OrderControllerUnitTests {
     @MockitoBean
-    @Autowired
     private OrderService orderService;
 
     @MockitoBean
-    @Autowired
     private SecurityService securityService;
 
     @Autowired
@@ -62,5 +65,22 @@ class OrderControllerUnitTests {
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldReturnBadRequestWhenOrderIsInvalid() throws Exception {
+        var invalidRequest =
+                TestDataFactory.createOrderRequestWithCustomItem("ABCD", "Product 1", new BigDecimal("25.50"));
+
+        given(orderService.createOrder(eq("visper"), any(CreateOrderRequest.class)))
+                .willThrow(new InvalidOrderException("Invalid product code: ABCD"));
+
+        mockMvc.perform(post("/api/orders")
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalidRequest)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.title").value("Invalid Order Creation Request"))
+                .andExpect(jsonPath("$.detail").value("Invalid product code: ABCD"))
+                .andExpect(jsonPath("$.service").value("order-service"));
     }
 }
