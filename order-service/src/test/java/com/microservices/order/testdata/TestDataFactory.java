@@ -1,16 +1,15 @@
 package com.microservices.order.testdata;
 
+import static org.instancio.Select.field;
+
 import com.microservices.order.domain.models.Address;
 import com.microservices.order.domain.models.CreateOrderRequest;
 import com.microservices.order.domain.models.Customer;
 import com.microservices.order.domain.models.OrderItem;
-import org.instancio.Instancio;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
-
-import static org.instancio.Select.field;
+import org.instancio.Instancio;
 
 public class TestDataFactory {
 

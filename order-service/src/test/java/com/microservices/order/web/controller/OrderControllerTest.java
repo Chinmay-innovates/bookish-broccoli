@@ -1,17 +1,16 @@
 package com.microservices.order.web.controller;
 
-import com.microservices.order.AbstractIT;
-import com.microservices.order.testdata.TestDataFactory;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-
-import java.math.BigDecimal;
-
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+
+import com.microservices.order.AbstractIT;
+import com.microservices.order.testdata.TestDataFactory;
+import java.math.BigDecimal;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 class OrderControllerTest extends AbstractIT {
 
@@ -33,8 +32,8 @@ class OrderControllerTest extends AbstractIT {
         @Test
         void shouldReturnBadRequestWhenProductIsInvalid() {
             mockGetProductByCode("P100", "Product 1", new BigDecimal("25.50"));
-            var payload = TestDataFactory
-                    .createOrderRequestWithCustomItem("ABCD", "Product 1", new BigDecimal("25.50"));
+            var payload =
+                    TestDataFactory.createOrderRequestWithCustomItem("ABCD", "Product 1", new BigDecimal("25.50"));
             given().contentType(JSON)
                     .body(payload)
                     .when()
@@ -49,8 +48,7 @@ class OrderControllerTest extends AbstractIT {
         @Test
         void shouldReturnBadRequestWhenProductPriceIsNotMatching() {
             mockGetProductByCode("P100", "Product 1", new BigDecimal("25.50"));
-            var payload = TestDataFactory
-                    .createOrderRequestWithCustomItem("P100", "Product 1", new BigDecimal("1000"));
+            var payload = TestDataFactory.createOrderRequestWithCustomItem("P100", "Product 1", new BigDecimal("1000"));
             given().contentType(JSON)
                     .body(payload)
                     .when()
