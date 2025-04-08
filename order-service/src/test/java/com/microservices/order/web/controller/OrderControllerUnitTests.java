@@ -17,7 +17,6 @@ import com.microservices.order.domain.models.InvalidOrderException;
 import com.microservices.order.domain.models.OrderService;
 import com.microservices.order.domain.models.SecurityService;
 import com.microservices.order.testdata.TestDataFactory;
-import java.math.BigDecimal;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -69,8 +68,7 @@ class OrderControllerUnitTests {
 
     @Test
     void shouldReturnBadRequestWhenOrderIsInvalid() throws Exception {
-        var invalidRequest =
-                TestDataFactory.createOrderRequestWithCustomItem("ABCD", "Product 1", new BigDecimal("25.50"));
+        var invalidRequest = TestDataFactory.createOrderRequestWithInvalidOrderItems();
 
         given(orderService.createOrder(eq("visper"), any(CreateOrderRequest.class)))
                 .willThrow(new InvalidOrderException("Invalid product code: ABCD"));
